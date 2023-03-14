@@ -3,7 +3,6 @@ body {
   font-family: "Poppins";
 }
 h2 {
-  width: 100%;
   font-style: normal;
   font-weight: 700;
   font-size: 14px;
@@ -73,7 +72,7 @@ h2 {
       top: 0px;
     }
     .chevron.left {
-      opacity: 0;
+      // opacity: 0;
     }
   }
   .pokeball {
@@ -114,11 +113,60 @@ h2 {
         // height: 20px;
         border-radius: 10px;
         /* Pokémon Type/Grass */
+
+        &.bug {
+          background: #a7b723;
+        }
+        &.dark {
+          background: #75574c;
+        }
+        &.dragon {
+          background: #7037ff;
+        }
+        &.electric {
+          background: #f9cf30;
+        }
+        &.fairy {
+          background: #e69eac;
+        }
+        &.fighting {
+          background: #e69eac;
+        }
+        &.fire {
+          background: #f57d31;
+        }
+        &.flying {
+          background: #a891ec;
+        }
+        &.ghost {
+          background: #70559b;
+        }
+        &.normal {
+          background: #aaa67f;
+        }
         &.grass {
           background: #74cb48;
         }
+        &.ground {
+          background: #dec16b;
+        }
+        &.ice {
+          background: #9ad6df;
+        }
         &.poison {
           background: #a43e9e;
+        }
+        &.psychic {
+          background: #fb5584;
+        }
+        &.rock {
+          background: #b69e31;
+        }
+        &.steel {
+          background: #b7b9d0;
+        }
+        &.water {
+          background: #6493eb;
         }
 
         //Text
@@ -128,7 +176,7 @@ h2 {
         font-style: normal;
         font-weight: 700;
         font-size: 10px;
-        line-height: 16px;
+        line-height: 17px;
 
         /* identical to box height, or 160% */
 
