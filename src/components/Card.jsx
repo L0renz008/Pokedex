@@ -1,32 +1,45 @@
 import React, { useEffect, useState } from "react";
+import { Routes, Route, useSearchParams, BrowserRouter, redirect } from "react-router-dom";
 import chevronRight from "../assets/chevron_right.svg";
 import chevronLeft from "../assets/chevron_left.svg";
 import pokeball from "../assets/pokeball.svg";
 import weight from "../assets/weight.svg";
 import height from "../assets/height.svg";
 import arrow_left from "../assets/arrow_left.svg";
+import Loading from "./Loading";
 
 export default function Card() {
-  const [torti, setTorti] = useState([]);
+  const [poke, setPoke] = useState([]);
   const [loading, setLoading] = useState(true);
+  const queryParameters = new URLSearchParams(window.location.search);
+  const [currentPoke, setCurrentPoke] = useState(
+    `https://pokeapi.co/api/v2/pokemon/${parseInt(queryParameters.get("id"))}`
+  );
 
   async function getPokemonData() {
-    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/1000`, {
+    const res = await fetch(currentPoke, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });
     const data = await res.json();
-    console.log(data);
 
     const poke = {
       id: data.id,
       name: data.name.charAt(0).toUpperCase() + data.name.slice(1),
       height: data.height,
       weight: data.weight,
-      abilities: data.abilities.map((ability) => ability.ability.name),
+      abilities: [
+        ...new Set(
+          data.abilities.map(
+            (ability) =>
+              ability.ability.name.charAt(0).toUpperCase() + ability.ability.name.slice(1)
+          )
+        ),
+      ],
       artwork: {
         official: data.sprites.other["official-artwork"].front_default,
         home: data.sprites.other["home"].front_default,
+        shiny: data.sprites.other["official-artwork"].front_shiny,
       },
       stats: {
         hp: data.stats[0].base_stat,
@@ -37,84 +50,87 @@ export default function Card() {
         speed: data.stats[5].base_stat,
       },
       types: data.types.map(
-        (type) =>
-          type.type.name.charAt(0).toUpperCase() + type.type.name.slice(1)
+        (type) => type.type.name.charAt(0).toUpperCase() + type.type.name.slice(1)
       ),
     };
-    console.log("poke = ", poke);
-    setTorti(poke);
+    setPoke(poke);
     setLoading(false);
   }
   useEffect(() => {
     getPokemonData();
   }, []);
 
+  if (loading) return <Loading />;
   return (
-    <div className="card-container">
+    <div className={`card-container ${poke?.types[0].toLowerCase()}`}>
       <div className="pokeball">
         <img src={pokeball} alt="pokeball" />
       </div>
       <div className="title">
-        <img
-          src={arrow_left}
-          alt="Retour"
-          className="arrow left"
-          onClick={getPokemonData}
-        />
-        <h1>{torti?.name}</h1>
-        <span>#{torti?.id}</span>
+        <img src={arrow_left} alt="Retour" className="arrow left" onClick={getPokemonData} />
+        <h1>{poke?.name}</h1>
+        <span>#{poke?.id.toString().padStart(4, "0")}</span>
       </div>
       <div className="image">
-        <img src={chevronLeft} alt="chevron-left" className="chevron left" />
+        <a href={`?id=${poke?.id - 1}`}>
+          <img src={chevronLeft} alt="chevron-left" className="chevron left" />
+        </a>
         <img
           // src="../img/bulbasaur.png"
-          src={torti?.artwork.official}
-          alt={`${torti?.name}.png`}
+          src={
+            queryParameters.get("shiny") === "true" ? poke?.artwork.shiny : poke?.artwork.official
+          }
+          alt={`${poke?.name}.png`}
           className="pokemon-img"
         />
-        <img src={chevronRight} alt="chevron-right" className="chevron right" />
+        <a href={`?id=${poke?.id + 1}`}>
+          <img src={chevronRight} alt="chevron-right" className="chevron right" />
+        </a>
       </div>
       <div className="card-info">
         <div className="type-container">
-          {torti
-            ? torti.types.map((type) => (
-                <h2 className={`type ${type.toLowerCase()}`}>{type}</h2>
+          {poke
+            ? poke.types.map((type) => (
+                <h2 className={`type ${type.toLowerCase()}`} key={type}>
+                  {type}
+                </h2>
               ))
             : null}
         </div>
-        <div className="about">
+        <div className={`about ${poke?.types[0].toLowerCase()}`}>
           <h2>About</h2>
         </div>
         <div className="attributes">
           <div className="weight">
             <div className="weight-info">
               <img src={weight} alt="weight" className="img_weight" />
-              <span>6,9 kg</span>
+              <span>{poke?.weight / 10} kg</span>
             </div>
             <span>Weight</span>
           </div>
           <div className="height">
             <div className="height-info">
               <img src={height} alt="height" className="img_height" />
-              <span>0,7 m</span>
+              <span>{poke?.height / 10} m</span>
             </div>
             <span>Height</span>
           </div>
           <div className="abilities">
             <div className="abilities-info">
-              <span>Chlorophyll</span>
-              <span>Overgrow</span>
+              {poke?.abilities.map((ability) => (
+                <span key={ability}>{ability}</span>
+              ))}
             </div>
             <span>Abilities</span>
           </div>
         </div>
         <div className="description">
           <p>
-            There is a plant seed on its back right from the day this Pokémon is
-            born. The seed slowly grows larger.
+            There is a plant seed on its back right from the day this Pokémon is born. The seed
+            slowly grows larger.
           </p>
         </div>
-        <div className="base-stats">
+        <div className={`base-stats ${poke?.types[0].toLowerCase()}`}>
           <h2>Base Stats</h2>
           <div className="base-stats-content">
             <div className="label">
@@ -126,37 +142,37 @@ export default function Card() {
               <p>SPE</p>
             </div>
             <div className="value">
-              <p>45</p>
-              <p>49</p>
-              <p>49</p>
-              <p>65</p>
-              <p>65</p>
-              <p>45</p>
+              <p>{poke?.stats.hp}</p>
+              <p>{poke?.stats.attack}</p>
+              <p>{poke?.stats.defense}</p>
+              <p>{poke?.stats.spattack}</p>
+              <p>{poke?.stats.spdefense}</p>
+              <p>{poke?.stats.speed}</p>
             </div>
             <div className="chart">
               <div
-                className="stat hp"
-                style={{ width: `${(45 * 100) / 200}%` }}
+                className={`stat hp ${poke?.types[0].toLowerCase()}`}
+                style={{ width: `${(poke?.stats.hp * 100) / 255}%` }}
               ></div>
               <div
-                className="stat attack"
-                style={{ width: `${(49 * 100) / 200}%` }}
+                className={`stat attack ${poke?.types[0].toLowerCase()}`}
+                style={{ width: `${(poke?.stats.attack * 100) / 255}%` }}
               ></div>
               <div
-                className="stat defense"
-                style={{ width: `${(49 * 100) / 200}%` }}
+                className={`stat defense ${poke?.types[0].toLowerCase()}`}
+                style={{ width: `${(poke?.stats.defense * 100) / 255}%` }}
               ></div>
               <div
-                className="stat spe-attack"
-                style={{ width: `${(65 * 100) / 200}%` }}
+                className={`stat spe-attack ${poke?.types[0].toLowerCase()}`}
+                style={{ width: `${(poke?.stats.spattack * 100) / 255}%` }}
               ></div>
               <div
-                className="stat spe-defense"
-                style={{ width: `${(65 * 100) / 200}%` }}
+                className={`stat spe-defense ${poke?.types[0].toLowerCase()}`}
+                style={{ width: `${(poke?.stats.spdefense * 100) / 255}%` }}
               ></div>
               <div
-                className="stat speed"
-                style={{ width: `${(45 * 100) / 200}%` }}
+                className={`stat speed ${poke?.types[0].toLowerCase()}`}
+                style={{ width: `${(poke?.stats.speed * 100) / 255}%` }}
               ></div>
             </div>
           </div>
