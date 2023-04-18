@@ -76,11 +76,14 @@ export default function Card() {
         <span>#{poke?.id.toString().padStart(4, "0")}</span>
       </div>
       <div className="image">
-        <a href={`/${poke?.id - 1}`}>
+        <a
+          href={`/${poke?.id - 1}`}
+          style={poke?.id === 1 ? { opacity: "0", pointerEvents: "none" } : null}
+        >
           <img src={chevronLeft} alt="chevron-left" className="chevron left" />
         </a>
+
         <img
-          // src="../img/bulbasaur.png"
           src={poke?.artwork.official}
           alt={`${poke?.name}.png`}
           className="pokemon-img"
@@ -89,7 +92,6 @@ export default function Card() {
         />
         {imgLoaded ? (
           <img
-            // src="../img/bulbasaur.png"
             src={poke?.artwork.official}
             alt={`${poke?.name}.png`}
             className="pokemon-img"
@@ -97,12 +99,12 @@ export default function Card() {
           />
         ) : (
           <Loading />
-          // <div className="skeleton skeleton-img"></div>
         )}
-
-        <a href={`/${poke?.id + 1}`}>
-          <img src={chevronRight} alt="chevron-right" className="chevron right" />
-        </a>
+        {poke?.id === 1010 ? null : (
+          <a href={`/${poke?.id + 1}`}>
+            <img src={chevronRight} alt="chevron-right" className="chevron right" />
+          </a>
+        )}
       </div>
       <div className="card-info">
         <div className="type-container">
@@ -176,7 +178,6 @@ export default function Card() {
               >
                 <div
                   className={`stat hp ${poke?.types[0].toLowerCase()}`}
-                  // style={{ width: `${100 / (poke?.stats.hp / 255)}%` }}
                   style={{ width: `${(100 * 255) / poke?.stats.hp}%`, opacity: "0.2" }}
                 ></div>
               </div>
@@ -186,7 +187,6 @@ export default function Card() {
               >
                 <div
                   className={`stat hp ${poke?.types[0].toLowerCase()}`}
-                  // style={{ width: `${100 / (poke?.stats.hp / 255)}%` }}
                   style={{ width: `${(100 * 255) / poke?.stats.attack}%`, opacity: "0.2" }}
                 ></div>
               </div>
@@ -196,7 +196,6 @@ export default function Card() {
               >
                 <div
                   className={`stat hp ${poke?.types[0].toLowerCase()}`}
-                  // style={{ width: `${100 / (poke?.stats.hp / 255)}%` }}
                   style={{ width: `${(100 * 255) / poke?.stats.defense}%`, opacity: "0.2" }}
                 ></div>
               </div>
@@ -206,7 +205,6 @@ export default function Card() {
               >
                 <div
                   className={`stat hp ${poke?.types[0].toLowerCase()}`}
-                  // style={{ width: `${100 / (poke?.stats.hp / 255)}%` }}
                   style={{ width: `${(100 * 255) / poke?.stats.spattack}%`, opacity: "0.2" }}
                 ></div>
               </div>
@@ -216,7 +214,6 @@ export default function Card() {
               >
                 <div
                   className={`stat hp ${poke?.types[0].toLowerCase()}`}
-                  // style={{ width: `${100 / (poke?.stats.hp / 255)}%` }}
                   style={{ width: `${(100 * 255) / poke?.stats.spdefense}%`, opacity: "0.2" }}
                 ></div>
               </div>
@@ -226,7 +223,6 @@ export default function Card() {
               >
                 <div
                   className={`stat hp ${poke?.types[0].toLowerCase()}`}
-                  // style={{ width: `${100 / (poke?.stats.hp / 255)}%` }}
                   style={{ width: `${(100 * 255) / poke?.stats.speed}%`, opacity: "0.2" }}
                 ></div>
               </div>
