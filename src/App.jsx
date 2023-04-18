@@ -6,11 +6,13 @@ import reactLogo from "./assets/react.svg";
 import Card from "./components/Card";
 
 function App() {
+  // const [id, setId] = useState();
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Card />} />
+          <Route path={`/:id`} element={<Card />} />
+          {/* <Route path={`/`} element={<Card />} /> */}
         </Routes>
       </BrowserRouter>
     </div>
