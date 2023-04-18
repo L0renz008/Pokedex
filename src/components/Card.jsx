@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route, useSearchParams, BrowserRouter, redirect } from "react-router-dom";
+import { useParams } from "react-router-dom";
+
 import chevronRight from "../assets/chevron_right.svg";
 import chevronLeft from "../assets/chevron_left.svg";
 import pokeball from "../assets/pokeball.svg";
@@ -11,13 +12,12 @@ import Loading from "./Loading";
 export default function Card() {
   const [poke, setPoke] = useState([]);
   const [loading, setLoading] = useState(true);
-  const queryParameters = new URLSearchParams(window.location.search);
-  const [currentPoke, setCurrentPoke] = useState(
-    `https://pokeapi.co/api/v2/pokemon/${parseInt(queryParameters.get("id"))}`
-  );
+
+  const urlParams = useParams();
+  const id = urlParams.id;
 
   async function getPokemonData() {
-    const res = await fetch(currentPoke, {
+    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });
@@ -56,6 +56,10 @@ export default function Card() {
     setPoke(poke);
     setLoading(false);
   }
+  const [imgLoaded, setImgLoaded] = useState(false);
+  const handleImgLoad = () => {
+    setImgLoaded(true);
+  };
   useEffect(() => {
     getPokemonData();
   }, []);
@@ -72,18 +76,31 @@ export default function Card() {
         <span>#{poke?.id.toString().padStart(4, "0")}</span>
       </div>
       <div className="image">
-        <a href={`?id=${poke?.id - 1}`}>
+        <a href={`/${poke?.id - 1}`}>
           <img src={chevronLeft} alt="chevron-left" className="chevron left" />
         </a>
         <img
           // src="../img/bulbasaur.png"
-          src={
-            queryParameters.get("shiny") === "true" ? poke?.artwork.shiny : poke?.artwork.official
-          }
+          src={poke?.artwork.official}
           alt={`${poke?.name}.png`}
           className="pokemon-img"
+          onLoad={handleImgLoad}
+          style={{ display: "none" }}
         />
-        <a href={`?id=${poke?.id + 1}`}>
+        {imgLoaded ? (
+          <img
+            // src="../img/bulbasaur.png"
+            src={poke?.artwork.official}
+            alt={`${poke?.name}.png`}
+            className="pokemon-img"
+            onLoad={handleImgLoad}
+          />
+        ) : (
+          <Loading />
+          // <div className="skeleton skeleton-img"></div>
+        )}
+
+        <a href={`/${poke?.id + 1}`}>
           <img src={chevronRight} alt="chevron-right" className="chevron right" />
         </a>
       </div>
@@ -125,7 +142,8 @@ export default function Card() {
           </div>
         </div>
         <div className="description">
-          <p>
+          <div className="skeleton skeleton-text"></div>
+          <p style={{ display: "none" }}>
             There is a plant seed on its back right from the day this Pokémon is born. The seed
             slowly grows larger.
           </p>
@@ -152,28 +170,66 @@ export default function Card() {
             <div className="chart">
               <div
                 className={`stat hp ${poke?.types[0].toLowerCase()}`}
-                style={{ width: `${(poke?.stats.hp * 100) / 255}%` }}
-              ></div>
+                style={{
+                  width: `${(poke?.stats.hp * 100) / 255}%`,
+                }}
+              >
+                <div
+                  className={`stat hp ${poke?.types[0].toLowerCase()}`}
+                  // style={{ width: `${100 / (poke?.stats.hp / 255)}%` }}
+                  style={{ width: `${(100 * 255) / poke?.stats.hp}%`, opacity: "0.2" }}
+                ></div>
+              </div>
               <div
                 className={`stat attack ${poke?.types[0].toLowerCase()}`}
                 style={{ width: `${(poke?.stats.attack * 100) / 255}%` }}
-              ></div>
+              >
+                <div
+                  className={`stat hp ${poke?.types[0].toLowerCase()}`}
+                  // style={{ width: `${100 / (poke?.stats.hp / 255)}%` }}
+                  style={{ width: `${(100 * 255) / poke?.stats.attack}%`, opacity: "0.2" }}
+                ></div>
+              </div>
               <div
                 className={`stat defense ${poke?.types[0].toLowerCase()}`}
                 style={{ width: `${(poke?.stats.defense * 100) / 255}%` }}
-              ></div>
+              >
+                <div
+                  className={`stat hp ${poke?.types[0].toLowerCase()}`}
+                  // style={{ width: `${100 / (poke?.stats.hp / 255)}%` }}
+                  style={{ width: `${(100 * 255) / poke?.stats.defense}%`, opacity: "0.2" }}
+                ></div>
+              </div>
               <div
                 className={`stat spe-attack ${poke?.types[0].toLowerCase()}`}
                 style={{ width: `${(poke?.stats.spattack * 100) / 255}%` }}
-              ></div>
+              >
+                <div
+                  className={`stat hp ${poke?.types[0].toLowerCase()}`}
+                  // style={{ width: `${100 / (poke?.stats.hp / 255)}%` }}
+                  style={{ width: `${(100 * 255) / poke?.stats.spattack}%`, opacity: "0.2" }}
+                ></div>
+              </div>
               <div
                 className={`stat spe-defense ${poke?.types[0].toLowerCase()}`}
                 style={{ width: `${(poke?.stats.spdefense * 100) / 255}%` }}
-              ></div>
+              >
+                <div
+                  className={`stat hp ${poke?.types[0].toLowerCase()}`}
+                  // style={{ width: `${100 / (poke?.stats.hp / 255)}%` }}
+                  style={{ width: `${(100 * 255) / poke?.stats.spdefense}%`, opacity: "0.2" }}
+                ></div>
+              </div>
               <div
                 className={`stat speed ${poke?.types[0].toLowerCase()}`}
                 style={{ width: `${(poke?.stats.speed * 100) / 255}%` }}
-              ></div>
+              >
+                <div
+                  className={`stat hp ${poke?.types[0].toLowerCase()}`}
+                  // style={{ width: `${100 / (poke?.stats.hp / 255)}%` }}
+                  style={{ width: `${(100 * 255) / poke?.stats.speed}%`, opacity: "0.2" }}
+                ></div>
+              </div>
             </div>
           </div>
         </div>
