@@ -4,7 +4,7 @@ import { Routes, Route, useSearchParams, BrowserRouter } from "react-router-dom"
 import reactLogo from "./assets/react.svg";
 
 import Card from "./components/Card";
-import List from "./components/List";
+import Pokedex from "./components/Pokedex";
 
 function App() {
   // const [id, setId] = useState();
@@ -13,7 +13,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path={`/:id`} element={<Card />} />
-          <Route path={`/`} element={<List />} />
+          <Route path={`/`} element={<Pokedex />} />
         </Routes>
       </BrowserRouter>
     </div>
