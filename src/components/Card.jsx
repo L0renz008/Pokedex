@@ -71,7 +71,10 @@ export default function Card() {
         <img src={pokeball} alt="pokeball" />
       </div>
       <div className="title">
-        <img src={arrow_left} alt="Retour" className="arrow left" onClick={getPokemonData} />
+        <a href="/">
+          <img src={arrow_left} alt="Retour" className="arrow left" />
+        </a>
+
         <h1>{poke?.name}</h1>
         <span>#{poke?.id.toString().padStart(4, "0")}</span>
       </div>
