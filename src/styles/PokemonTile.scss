@@ -1,4 +1,4 @@
-a {
+a.pokemon-tile {
   // display: flex;
   // align-items: center;
   // height: 108px;
@@ -34,7 +34,7 @@ a {
     width: 100%;
     height: 16px;
 
-    font-size: 8px;
+    font-size: 10px;
     //   line-height: 12px;
 
     /* identical to box height, or 150% */
@@ -48,36 +48,27 @@ a {
   .custom-loader {
     width: 35px;
     height: 35px;
-    color: #f4225b;
+    color: blue;
     --c: linear-gradient(currentColor 0 0);
     background: var(--c) 0 0, var(--c) 100% 0, var(--c) 100% 100%,
       var(--c) 0 100%;
     background-repeat: no-repeat;
     animation: l2-1 2s infinite, l2-2 2s infinite;
   }
-  li {
-    padding: 5px;
+  li.name {
+    // padding: 5px;
     list-style: none;
 
-    //   width: 88px;
-    //   height: 16px;
+    font-size: 12px;
 
-    /* Body/Body 3 */
-    //   font-family: "Poppins";
-    //   font-style: normal;
-    //   font-weight: 400;
-    font-size: 10px;
-    //   line-height: 16px;
-
-    /* identical to box height, or 160% */
-    //   display: flex;
-    //   align-items: center;
-    //   text-align: center;
-
-    /* Grayscale/Dark */
     color: #1d1d1d;
-
-    //   width: 100px;
+    background: #efefef;
+    border-radius: 7px;
+    width: 100%;
+    height: 41%;
+    display: flex;
+    align-items: end;
+    justify-content: center;
   }
 }
 

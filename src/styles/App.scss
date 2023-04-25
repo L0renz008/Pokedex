@@ -13,8 +13,8 @@
   //   -moz-osx-font-smoothing: grayscale;
   //   -webkit-text-size-adjust: 100%;
 }
-// *{
-//   outline: 1px solid
+// * {
+//   outline: 1px solid;
 // }
 
 a {
@@ -112,4 +112,8 @@ button:focus-visible {
 
 .read-the-docs {
   color: #888;
+}
+
+.App {
+  margin: 10px;
 }
