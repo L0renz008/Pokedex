@@ -26,10 +26,18 @@ export default function PokemonTile({ poke }) {
   return (
     <a href={`${poke.url.split("https://pokeapi.co/api/v2/pokemon").pop()}`}>
       <span className="pokemon-id">#{id?.toString().padStart(4, "0")}</span>
-      <img style={{ display: "none" }} src={artwork} onLoad={handleImgLoad}></img>
-      {isLoaded ? <img style={{ height: "50px" }} src={artwork}></img> : <Loading />}
+      <img
+        style={{ display: "none" }}
+        src={artwork}
+        onLoad={handleImgLoad}
+      ></img>
+      {isLoaded ? (
+        <img style={{ height: "80px" }} src={artwork}></img>
+      ) : (
+        <div className="custom-loader"></div>
+      )}
 
-      <li>{poke.name}</li>
+      <li>{poke.name.charAt(0).toUpperCase() + poke.name.slice(1)}</li>
     </a>
   );
 }
