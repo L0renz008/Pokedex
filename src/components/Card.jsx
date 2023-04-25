@@ -30,7 +30,11 @@ export default function Card() {
       weight: data.weight,
       abilities: [
         ...new Set(
-          data.abilities.map((ability) => ability.ability.name.charAt(0).toUpperCase() + ability.ability.name.slice(1))
+          data.abilities.map(
+            (ability) =>
+              ability.ability.name.charAt(0).toUpperCase() +
+              ability.ability.name.slice(1)
+          )
         ),
       ],
       artwork: {
@@ -46,7 +50,10 @@ export default function Card() {
         spdefense: data.stats[4].base_stat,
         speed: data.stats[5].base_stat,
       },
-      types: data.types.map((type) => type.type.name.charAt(0).toUpperCase() + type.type.name.slice(1)),
+      types: data.types.map(
+        (type) =>
+          type.type.name.charAt(0).toUpperCase() + type.type.name.slice(1)
+      ),
     };
     setPoke(poke);
     setLoading(false);
@@ -67,14 +74,24 @@ export default function Card() {
       </div>
       <div className="title">
         <a href="/">
-          <img src={arrow_left} alt="Retour" className="arrow left" onClick={getPokemonData} />
+          <img
+            src={arrow_left}
+            alt="Retour"
+            className="arrow left"
+            onClick={getPokemonData}
+          />
         </a>
 
         <h1>{poke?.name}</h1>
         <span>#{poke?.id.toString().padStart(4, "0")}</span>
       </div>
       <div className="image">
-        <a href={`/${poke?.id - 1}`} style={poke?.id === 1 ? { opacity: "0", pointerEvents: "none" } : null}>
+        <a
+          href={`/pokemon/${poke?.id - 1}`}
+          style={
+            poke?.id === 1 ? { opacity: "0", pointerEvents: "none" } : null
+          }
+        >
           <img src={chevronLeft} alt="chevron-left" className="chevron left" />
         </a>
 
@@ -86,13 +103,22 @@ export default function Card() {
           style={{ display: "none" }}
         />
         {imgLoaded ? (
-          <img src={poke?.artwork.official} alt={`${poke?.name}.png`} className="pokemon-img" onLoad={handleImgLoad} />
+          <img
+            src={poke?.artwork.official}
+            alt={`${poke?.name}.png`}
+            className="pokemon-img"
+            onLoad={handleImgLoad}
+          />
         ) : (
           <Loading />
         )}
         {poke?.id === 1010 ? null : (
-          <a href={`/${poke?.id + 1}`}>
-            <img src={chevronRight} alt="chevron-right" className="chevron right" />
+          <a href={`/pokemon/${poke?.id + 1}`}>
+            <img
+              src={chevronRight}
+              alt="chevron-right"
+              className="chevron right"
+            />
           </a>
         )}
       </div>
@@ -136,7 +162,8 @@ export default function Card() {
         <div className="description">
           <div className="skeleton skeleton-text"></div>
           <p style={{ display: "none" }}>
-            There is a plant seed on its back right from the day this Pokémon is born. The seed slowly grows larger.
+            There is a plant seed on its back right from the day this Pokémon is
+            born. The seed slowly grows larger.
           </p>
         </div>
         <div className={`base-stats ${poke?.types[0].toLowerCase()}`}>
