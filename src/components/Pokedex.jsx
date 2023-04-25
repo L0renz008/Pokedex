@@ -8,9 +8,11 @@ export default function Pokedex() {
   const [pokedexSize, setPokedexSize] = useState();
   const [loading, setLoading] = useState(true);
 
+  const [onePoke, setOnePoke] = useState();
+
   async function getListOfPokemons(page) {
     const res = await fetch(
-      `https://pokeapi.co/api/v2/pokemon?limit=${page * 3}`,
+      `https://pokeapi.co/api/v2/pokemon?limit=${page * 10}`,
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },
@@ -23,6 +25,17 @@ export default function Pokedex() {
     setListOfPoke(list);
     setLoading(false);
   }
+  async function getOnePokemon(id) {
+    const res = await fetch(
+      `https://pokeapi.co/api/v2/pokemon?limit=1&offset=${id - 1}`,
+      { method: "GET", headers: { "Content-Type": "application/json" } }
+    );
+    const data = await res.json();
+    const [onePokemon] = data.results;
+    setOnePoke(onePokemon);
+  }
+  // console.log("getOnePoke", onePoke);
+  // console.log("list", listOfPoke[9]);
   // async function getArtwork(url) {
   //   const res = await fetch(`${url}`, {
   //     method: "GET",
@@ -37,13 +50,31 @@ export default function Pokedex() {
 
   useEffect(() => {
     getListOfPokemons(1);
+    // getOnePokemon(2);
   }, []);
+  const handleChange = (event) => {
+    // const [tileToDisplay] = document.getElementsByClassName(event.target.value);
+    // const tileToHide = document.getElementsByClassName("pokemon-tile");
+    // const tileToDisplay = document.getElementById(event.target.value);
+    // console.log(tileToHide);
+    // for (let i = 0; i <= tileToHide.length; i++) {
+    //   console.log(tileToHide[i]);
+    //   tileToDisplay.style.display = "";
+    //   tileToHide[i].style.display = "none";
+    // }
+    getOnePokemon(event.target.value);
 
+    // if (tileToDisplay) {
+    //   tileToDisplay.style.display = "none";
+    //   console.log(tileToDisplay.style.display);
+    // }
+  };
   if (loading) return <Loading />;
   return (
     <>
       <div className="title">Pokédex</div>
-
+      <input type="text" onChange={handleChange} />
+      {onePoke ? <PokemonTile poke={onePoke} /> : null}
       <InfiniteScroll
         pageStart={0}
         loadMore={getListOfPokemons}
@@ -52,6 +83,7 @@ export default function Pokedex() {
         className="pokedex-body"
       >
         {listOfPoke.map((poke, index) => {
+          // console.log(poke);
           return (
             <PokemonTile key={index} poke={poke} />
             // <a
