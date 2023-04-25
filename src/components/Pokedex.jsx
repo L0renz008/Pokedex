@@ -9,10 +9,13 @@ export default function Pokedex() {
   const [loading, setLoading] = useState(true);
 
   async function getListOfPokemons(page) {
-    const res = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${page * 3}`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    });
+    const res = await fetch(
+      `https://pokeapi.co/api/v2/pokemon?limit=${page * 3}`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }
+    );
     const data = await res.json();
     const list = data.results;
 
@@ -45,7 +48,7 @@ export default function Pokedex() {
         pageStart={0}
         loadMore={getListOfPokemons}
         hasMore={listOfPoke.length !== pokedexSize}
-        loader={<Loading />}
+        // loader={<div>Loading...</div>}
         className="pokedex-body"
       >
         {listOfPoke.map((poke, index) => {
