@@ -62,7 +62,9 @@ export default function Pokedex() {
   return (
     <>
       <header>
-        <div className="title">Pokédex</div>
+        <div className="title">
+          <h1>Pokédex</h1>
+        </div>
       </header>
 
       <input type="text" onChange={handleChange} />
