@@ -87,7 +87,7 @@ export default function Card() {
           <img
             src={arrow_left}
             alt="Retour"
-            className="arrow left"
+            className="arrow_left"
             onClick={getPokemonData}
           />
         </a>
