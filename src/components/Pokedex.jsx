@@ -3,13 +3,21 @@ import InfiniteScroll from "react-infinite-scroller";
 import Loading from "./Loading";
 import PokemonTile from "./PokemonTile";
 
+/**
+ * Component that shows all the Pokemon tiles with infinite scroll
+ *
+ */
 export default function Pokedex() {
-  const [listOfPoke, setListOfPoke] = useState([]);
+  const [listOfPokemon, setlistOfPokemon] = useState([]);
   const [pokedexSize, setPokedexSize] = useState();
   const [loading, setLoading] = useState(true);
 
-  const [onePoke, setOnePoke] = useState();
+  const [searchPokemon, setSearchPokemon] = useState();
 
+  /**
+   * Function that calls PokeAPI to get all the Pokemon available
+   * @param {int} page
+   */
   async function getListOfPokemons(page) {
     const res = await fetch(
       `https://pokeapi.co/api/v2/pokemon?limit=${page * 10}`,
@@ -22,87 +30,53 @@ export default function Pokedex() {
     const list = data.results;
 
     setPokedexSize(data.count);
-    setListOfPoke(list);
+    setlistOfPokemon(list);
     setLoading(false);
   }
+  /**
+   * Function that calls PokeAPI to get just one Pokemon specified by the `id`
+   * @param {int} id
+   */
   async function getOnePokemon(id) {
     const res = await fetch(
       `https://pokeapi.co/api/v2/pokemon?limit=1&offset=${id - 1}`,
       { method: "GET", headers: { "Content-Type": "application/json" } }
     );
     const data = await res.json();
-    const [onePokemon] = data.results;
-    setOnePoke(onePokemon);
+    setSearchPokemon(data.results[0]);
   }
-  // console.log("getOnePoke", onePoke);
-  // console.log("list", listOfPoke[9]);
-  // async function getArtwork(url) {
-  //   const res = await fetch(`${url}`, {
-  //     method: "GET",
-  //     headers: { "Content-Type": "application/json" },
-  //   });
-  //   const data = await res.json();
-  //   // console.log(data);
-  //   const artwork = data.sprites.other["official-artwork"].front_default;
-  //   console.log(artwork);
-  //   return artwork;
-  // }
+
+  /**
+   * Function that handle the input in order to get the Pokemon a user searches
+   * @param {*} event
+   */
+  const handleChange = (event) => {
+    getOnePokemon(event.target.value);
+  };
 
   useEffect(() => {
     getListOfPokemons(1);
-    // getOnePokemon(2);
   }, []);
-  const handleChange = (event) => {
-    // const [tileToDisplay] = document.getElementsByClassName(event.target.value);
-    // const tileToHide = document.getElementsByClassName("pokemon-tile");
-    // const tileToDisplay = document.getElementById(event.target.value);
-    // console.log(tileToHide);
-    // for (let i = 0; i <= tileToHide.length; i++) {
-    //   console.log(tileToHide[i]);
-    //   tileToDisplay.style.display = "";
-    //   tileToHide[i].style.display = "none";
-    // }
-    getOnePokemon(event.target.value);
-
-    // if (tileToDisplay) {
-    //   tileToDisplay.style.display = "none";
-    //   console.log(tileToDisplay.style.display);
-    // }
-  };
   if (loading) return <Loading />;
+
   return (
     <>
-      <div className="title">Pokédex</div>
+      <header>
+        <div className="title">Pokédex</div>
+      </header>
+
       <input type="text" onChange={handleChange} />
-      {onePoke ? <PokemonTile poke={onePoke} /> : null}
+      {searchPokemon ? <PokemonTile poke={searchPokemon} /> : null}
       <InfiniteScroll
         pageStart={0}
         loadMore={getListOfPokemons}
-        hasMore={listOfPoke.length !== pokedexSize}
-        // loader={<div>Loading...</div>}
+        hasMore={listOfPokemon.length !== pokedexSize}
         className="pokedex-body"
       >
-        {listOfPoke.map((poke, index) => {
-          // console.log(poke);
-          return (
-            <PokemonTile key={index} poke={poke} />
-            // <a
-            //   key={poke.name}
-            //   href={`${poke.url.split("https://pokeapi.co/api/v2/pokemon").pop()}`}
-            // >
-            //   <span className="pokemon-id">#9999</span>
-            //   <img src={getArtwork(poke.url)}></img>
-            //   <li>{poke.name}</li>
-            // </a>
-          );
+        {listOfPokemon.map((poke, index) => {
+          return <PokemonTile key={index} poke={poke} />;
         })}
       </InfiniteScroll>
-
-      {/* {listOfPoke.map((poke) => (
-        <a key={poke.name} href={`${poke.url.split("https://pokeapi.co/api/v2/pokemon").pop()}`}>
-          <li>{poke.name}</li>
-        </a>
-      ))} */}
     </>
   );
 }
