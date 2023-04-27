@@ -1,24 +1,17 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-// Usefull for conversion to ts
-
-// interface PokeProps {
-//   name: string;
-//   url: string;
-// }
+type PokeProps = {
+  poke: { name: string; url: string };
+};
 
 /**
  * Component for showing mini tiles of Pokemon.
  *
  * @component
- * @param {Object} poke
- * @param {string} poke.name
- * @param {string} poke.url
  */
-export default function PokemonTile({ poke }) {
-  //Need to add ': { poke: PokeProps }' just after {poke} in order to respect ts
+export default function PokemonTile({ poke }: PokeProps) {
   const [id, setId] = useState(0);
-  const [artwork, setArtwork] = useState();
+  const [artwork, setArtwork] = useState("");
 
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -46,10 +39,7 @@ export default function PokemonTile({ poke }) {
 
   return (
     <a className={`pokemon-tile`} id={`${id}`} href={`/pokemon/${id}`}>
-      <span className="pokemon-id">
-        #{id?.toString().padStart(4, "0")}
-        {/* write (id as any) instead of id to respect ts */}
-      </span>
+      <span className="pokemon-id">#{id?.toString().padStart(4, "0")}</span>
       <img
         style={{ display: "none" }}
         src={artwork}

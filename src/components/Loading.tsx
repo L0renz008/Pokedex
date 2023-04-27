@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import pokeball_color from "../assets/pokeball_color.svg";
 
 /**

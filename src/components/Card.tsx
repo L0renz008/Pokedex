@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import chevronRight from "../assets/chevron_right.svg";
@@ -29,11 +29,25 @@ export default function Card() {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });
-    const data = await res.json();
+    type Data = { [key: string]: any };
+    const data: Data = await res.json();
+    console.log(data);
 
-    const pokemon = {
+    type Pokemon = {
+      id: number;
+      name: string;
+      height: number;
+      weight: number;
+      abilities: Array<string>;
+      artwork: {};
+      stats: {};
+      types: Array<string>;
+    };
+    const pokemon: Pokemon = {
       id: data.id,
-      name: data.name.charAt(0).toUpperCase() + data.name.slice(1),
+      name:
+        (data.name as string).charAt(0).toUpperCase() +
+        (data.name as string).slice(1),
       height: data.height,
       weight: data.weight,
       abilities: [
