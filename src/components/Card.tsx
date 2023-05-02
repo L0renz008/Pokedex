@@ -10,12 +10,15 @@ import arrow_left from "../assets/arrow_left.svg";
 
 import Loading from "./Loading";
 
+import { IPokemon } from "./types/PokemonTypes";
+import { IPokeData } from "./types/PokemonTypes";
+
 /**
  * Component that displays the Card with all the Pokemon's infos
  *
  */
 export default function Card() {
-  const [pokemon, setPokemon] = useState([]);
+  const [pokemon, setPokemon] = useState<IPokemon>();
   const [loading, setLoading] = useState(true);
 
   const urlParams = useParams();
@@ -29,30 +32,19 @@ export default function Card() {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });
-    type Data = { [key: string]: any };
-    const data: Data = await res.json();
-    console.log(data);
+    const pokeData: IPokeData = await res.json();
+    // console.log(pokeData);
 
-    type Pokemon = {
-      id: number;
-      name: string;
-      height: number;
-      weight: number;
-      abilities: Array<string>;
-      artwork: {};
-      stats: {};
-      types: Array<string>;
-    };
-    const pokemon: Pokemon = {
-      id: data.id,
+    const pokemon: IPokemon = {
+      id: pokeData.id,
       name:
-        (data.name as string).charAt(0).toUpperCase() +
-        (data.name as string).slice(1),
-      height: data.height,
-      weight: data.weight,
+        (pokeData.name as string).charAt(0).toUpperCase() +
+        (pokeData.name as string).slice(1),
+      height: pokeData.height,
+      weight: pokeData.weight,
       abilities: [
         ...new Set(
-          data.abilities.map(
+          pokeData.abilities.map(
             (ability) =>
               ability.ability.name.charAt(0).toUpperCase() +
               ability.ability.name.slice(1)
@@ -60,19 +52,19 @@ export default function Card() {
         ),
       ],
       artwork: {
-        official: data.sprites.other["official-artwork"].front_default,
-        home: data.sprites.other["home"].front_default,
-        shiny: data.sprites.other["official-artwork"].front_shiny,
+        official: pokeData.sprites.other["official-artwork"].front_default,
+        home: pokeData.sprites.other["home"].front_default,
+        shiny: pokeData.sprites.other["official-artwork"].front_shiny,
       },
       stats: {
-        hp: data.stats[0].base_stat,
-        attack: data.stats[1].base_stat,
-        defense: data.stats[2].base_stat,
-        spattack: data.stats[3].base_stat,
-        spdefense: data.stats[4].base_stat,
-        speed: data.stats[5].base_stat,
+        hp: pokeData.stats[0].base_stat,
+        attack: pokeData.stats[1].base_stat,
+        defense: pokeData.stats[2].base_stat,
+        spattack: pokeData.stats[3].base_stat,
+        spdefense: pokeData.stats[4].base_stat,
+        speed: pokeData.stats[5].base_stat,
       },
-      types: data.types.map(
+      types: pokeData.types.map(
         (type) =>
           type.type.name.charAt(0).toUpperCase() + type.type.name.slice(1)
       ),
@@ -109,14 +101,23 @@ export default function Card() {
         <span>#{pokemon?.id.toString().padStart(4, "0")}</span>
       </div>
       <div className="image">
-        <a
-          href={`/pokemon/${pokemon?.id - 1}`}
-          style={
-            pokemon?.id === 1 ? { opacity: "0", pointerEvents: "none" } : null
-          }
-        >
-          <img src={chevronLeft} alt="chevron-left" className="chevron left" />
-        </a>
+        {pokemon?.id !== 1 ? (
+          <a
+            href={pokemon ? `/pokemon/${pokemon?.id - 1}` : ""}
+            // style={
+            //   pokemon?.id === 1 ? { opacity: "0", pointerEvents: "none" } : null
+            // }
+          >
+            <img
+              src={chevronLeft}
+              alt="chevron-left"
+              className="chevron left"
+            />
+          </a>
+        ) : (
+          <div />
+        )}
+
         <img
           src={pokemon?.artwork.official}
           alt={`${pokemon?.name}.png`}
@@ -134,7 +135,7 @@ export default function Card() {
           <Loading />
         )}
 
-        <a href={`/pokemon/${pokemon?.id + 1}`}>
+        {/* <a href={pokemon ? `/pokemon/${pokemon?.id + 1}` : ""}>
           <img
             src={chevronRight}
             alt="chevron-right"
@@ -145,7 +146,23 @@ export default function Card() {
                 : null
             }
           />
-        </a>
+        </a> */}
+        {pokemon?.id !== 1010 ? (
+          <a
+            href={pokemon ? `/pokemon/${pokemon?.id + 1}` : ""}
+            // style={
+            //   pokemon?.id === 1 ? { opacity: "0", pointerEvents: "none" } : null
+            // }
+          >
+            <img
+              src={chevronRight}
+              alt="chevron-right"
+              className="chevron right"
+            />
+          </a>
+        ) : (
+          <div />
+        )}
       </div>
       <div className="card-info">
         <div className="type-container">
@@ -164,14 +181,14 @@ export default function Card() {
           <div className="weight">
             <div className="weight-info">
               <img src={weight} alt="weight" className="img_weight" />
-              <span>{pokemon?.weight / 10} kg</span>
+              <span>{pokemon ? pokemon.weight / 10 : null} kg</span>
             </div>
             <span>Weight</span>
           </div>
           <div className="height">
             <div className="height-info">
               <img src={height} alt="height" className="img_height" />
-              <span>{pokemon?.height / 10} m</span>
+              <span>{pokemon ? pokemon.height / 10 : null} m</span>
             </div>
             <span>Height</span>
           </div>
