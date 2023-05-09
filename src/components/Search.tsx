@@ -15,7 +15,6 @@ export default function Search() {
    *
    */
   async function getOnePokemon() {
-    console.log(id);
     const res = await fetch(
       `https://pokeapi.co/api/v2/pokemon?limit=1&offset=${id - 1}`,
       { method: "GET", headers: { "Content-Type": "application/json" } }
