@@ -23,13 +23,6 @@ export default function Search() {
     const data = await res.json();
     setSearchPokemon(data.results[0]);
   }
-  //   /**
-  //    * Function that handle the input in order to get the Pokemon a user searches
-  //    * @param {*} event
-  //    */
-  //   const handleChange = () => {
-  //     getOnePokemon();
-  //   };
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -47,7 +40,9 @@ export default function Search() {
         pattern="[0-9]*"
         onChange={(e) => setId(e.target.valueAsNumber)}
       />
-      {searchPokemon ? <PokemonTile poke={searchPokemon} /> : null}
+      {searchPokemon && !Number.isNaN(id) ? (
+        <PokemonTile poke={searchPokemon} />
+      ) : null}
     </div>
   );
 }
