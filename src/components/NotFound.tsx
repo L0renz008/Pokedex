@@ -1,5 +1,3 @@
-// import React from "react";
-
 /**
  * Component that returns the 404 page
  * @returns
