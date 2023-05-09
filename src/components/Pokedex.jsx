@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import Loading from "./Loading";
 import PokemonTile from "./PokemonTile";
+import Search from "./Search";
 
 /**
  * Component that shows all the Pokemon tiles with infinite scroll
@@ -66,9 +67,7 @@ export default function Pokedex() {
           <h1>Pokédex</h1>
         </div>
       </header>
-
-      <input type="text" onChange={handleChange} />
-      {searchPokemon ? <PokemonTile poke={searchPokemon} /> : null}
+      <Search />
       <InfiniteScroll
         pageStart={0}
         loadMore={getListOfPokemons}
