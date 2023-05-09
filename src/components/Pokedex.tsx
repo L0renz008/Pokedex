@@ -4,60 +4,36 @@ import Loading from "./Loading";
 import PokemonTile from "./PokemonTile";
 import Search from "./Search";
 
+import axios from "axios";
+
 /**
  * Component that shows all the Pokemon tiles with infinite scroll
- *
  */
 export default function Pokedex() {
   const [listOfPokemon, setlistOfPokemon] = useState([]);
   const [pokedexSize, setPokedexSize] = useState();
   const [loading, setLoading] = useState(true);
 
-  const [searchPokemon, setSearchPokemon] = useState();
-
   /**
    * Function that calls PokeAPI to get all the Pokemon available
-   * @param {int} page
+   * @param {number} page
    */
-  async function getListOfPokemons(page) {
-    const res = await fetch(
-      `https://pokeapi.co/api/v2/pokemon?limit=${page * 10}`,
-      {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      }
+  async function getListOfPokemons(page: number) {
+    const res = await axios.get(
+      `https://pokeapi.co/api/v2/pokemon?limit=${page * 10}`
     );
-    const data = await res.json();
+    const data = res.data;
     const list = data.results;
 
     setPokedexSize(data.count);
     setlistOfPokemon(list);
     setLoading(false);
   }
-  /**
-   * Function that calls PokeAPI to get just one Pokemon specified by the `id`
-   * @param {int} id
-   */
-  async function getOnePokemon(id) {
-    const res = await fetch(
-      `https://pokeapi.co/api/v2/pokemon?limit=1&offset=${id - 1}`,
-      { method: "GET", headers: { "Content-Type": "application/json" } }
-    );
-    const data = await res.json();
-    setSearchPokemon(data.results[0]);
-  }
-
-  /**
-   * Function that handle the input in order to get the Pokemon a user searches
-   * @param {*} event
-   */
-  const handleChange = (event) => {
-    getOnePokemon(event.target.value);
-  };
 
   useEffect(() => {
     getListOfPokemons(1);
   }, []);
+
   if (loading) return <Loading />;
 
   return (
