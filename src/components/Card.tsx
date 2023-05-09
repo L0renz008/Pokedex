@@ -231,73 +231,99 @@ export default function Card() {
               <div
                 className={`stat hp ${pokemon?.types[0].toLowerCase()}`}
                 style={{
-                  width: `${(pokemon?.stats.hp * 100) / 255}%`,
+                  width: `${pokemon ? (pokemon.stats.hp * 100) / 255 : 0}%`,
                 }}
               >
                 <div
                   className={`stat hp ${pokemon?.types[0].toLowerCase()}`}
                   style={{
-                    width: `${(100 * 255) / pokemon?.stats.hp}%`,
+                    width: `${pokemon ? (100 * 255) / pokemon.stats.hp : 0}%`,
                     opacity: "0.2",
                   }}
                 ></div>
               </div>
               <div
                 className={`stat attack ${pokemon?.types[0].toLowerCase()}`}
-                style={{ width: `${(pokemon?.stats.attack * 100) / 255}%` }}
+                style={{
+                  width: `${pokemon ? (pokemon.stats.attack * 100) / 255 : 0}%`,
+                }}
               >
                 <div
                   className={`stat hp ${pokemon?.types[0].toLowerCase()}`}
                   style={{
-                    width: `${(100 * 255) / pokemon?.stats.attack}%`,
+                    width: `${
+                      pokemon ? (100 * 255) / pokemon.stats.attack : 0
+                    }%`,
                     opacity: "0.2",
                   }}
                 ></div>
               </div>
               <div
                 className={`stat defense ${pokemon?.types[0].toLowerCase()}`}
-                style={{ width: `${(pokemon?.stats.defense * 100) / 255}%` }}
+                style={{
+                  width: `${
+                    pokemon ? (pokemon.stats.defense * 100) / 255 : 0
+                  }%`,
+                }}
               >
                 <div
                   className={`stat hp ${pokemon?.types[0].toLowerCase()}`}
                   style={{
-                    width: `${(100 * 255) / pokemon?.stats.defense}%`,
+                    width: `${
+                      pokemon ? (100 * 255) / pokemon.stats.defense : 0
+                    }%`,
                     opacity: "0.2",
                   }}
                 ></div>
               </div>
               <div
                 className={`stat spe-attack ${pokemon?.types[0].toLowerCase()}`}
-                style={{ width: `${(pokemon?.stats.spattack * 100) / 255}%` }}
+                style={{
+                  width: `${
+                    pokemon ? (pokemon.stats.spattack * 100) / 255 : 0
+                  }%`,
+                }}
               >
                 <div
                   className={`stat hp ${pokemon?.types[0].toLowerCase()}`}
                   style={{
-                    width: `${(100 * 255) / pokemon?.stats.spattack}%`,
+                    width: `${
+                      pokemon ? (100 * 255) / pokemon?.stats.spattack : 0
+                    }%`,
                     opacity: "0.2",
                   }}
                 ></div>
               </div>
               <div
                 className={`stat spe-defense ${pokemon?.types[0].toLowerCase()}`}
-                style={{ width: `${(pokemon?.stats.spdefense * 100) / 255}%` }}
+                style={{
+                  width: `${
+                    pokemon ? (pokemon.stats.spdefense * 100) / 255 : 0
+                  }%`,
+                }}
               >
                 <div
                   className={`stat hp ${pokemon?.types[0].toLowerCase()}`}
                   style={{
-                    width: `${(100 * 255) / pokemon?.stats.spdefense}%`,
+                    width: `${
+                      pokemon ? (100 * 255) / pokemon?.stats.spdefense : 0
+                    }%`,
                     opacity: "0.2",
                   }}
                 ></div>
               </div>
               <div
                 className={`stat speed ${pokemon?.types[0].toLowerCase()}`}
-                style={{ width: `${(pokemon?.stats.speed * 100) / 255}%` }}
+                style={{
+                  width: `${pokemon ? (pokemon?.stats.speed * 100) / 255 : 0}%`,
+                }}
               >
                 <div
                   className={`stat hp ${pokemon?.types[0].toLowerCase()}`}
                   style={{
-                    width: `${(100 * 255) / pokemon?.stats.speed}%`,
+                    width: `${
+                      pokemon ? (100 * 255) / pokemon?.stats.speed : 0
+                    }%`,
                     opacity: "0.2",
                   }}
                 ></div>
