@@ -70,10 +70,13 @@ export default function Card() {
       setPokemon(pokemon);
       setLoading(false);
     } catch (e: any) {
-      if (e.response.status === 404) {
-        window.location.href = `/pokemon/not-found`;
-        return;
+      if (e.response) {
+        if (e.response.status === 404) {
+          window.location.href = `/pokemon/not-found`;
+          return;
+        }
       }
+      return;
     }
   }
 
