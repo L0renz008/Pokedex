@@ -40,7 +40,7 @@ export default function Pokedex() {
     <>
       <header>
         <div className="title">
-          <h1>Pokédex</h1>
+          <h1>Pokedex</h1>
         </div>
       </header>
       <Search />
