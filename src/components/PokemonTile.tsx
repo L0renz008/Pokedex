@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 
-type PokeProps = {
+export interface IPokeProps {
   poke: { name: string; url: string };
-};
+}
 
 /**
  * Component for showing mini tiles of Pokemon.
  *
  * @component
  */
-export default function PokemonTile({ poke }: PokeProps) {
+export default function PokemonTile({ poke }: IPokeProps) {
   const [id, setId] = useState(0);
   const [artwork, setArtwork] = useState("");
 
