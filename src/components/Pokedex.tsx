@@ -6,12 +6,17 @@ import Search from "./Search";
 
 import axios from "axios";
 
+interface IListOfPoke {
+  name: string;
+  url: string;
+}
+
 /**
  * Component that shows all the Pokemon tiles with infinite scroll
  */
 export default function Pokedex() {
-  const [listOfPokemon, setlistOfPokemon] = useState([]);
-  const [pokedexSize, setPokedexSize] = useState();
+  const [listOfPokemon, setlistOfPokemon] = useState<IListOfPoke[]>();
+  const [pokedexSize, setPokedexSize] = useState(0);
   const [loading, setLoading] = useState(true);
 
   /**
@@ -47,11 +52,11 @@ export default function Pokedex() {
       <InfiniteScroll
         pageStart={0}
         loadMore={getListOfPokemons}
-        hasMore={listOfPokemon.length !== pokedexSize}
+        hasMore={listOfPokemon?.length !== pokedexSize}
         className="pokedex-body"
       >
-        {listOfPokemon.map((poke, index) => {
-          return <PokemonTile key={index} poke={poke} />;
+        {listOfPokemon?.map((poke, index) => {
+          return <PokemonTile key={index} name={poke.name} url={poke.url} />;
         })}
       </InfiniteScroll>
     </>
