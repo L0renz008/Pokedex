@@ -62,9 +62,9 @@ export default function PokemonTile({ poke }: IPokeProps) {
       ) : (
         <div className="custom-loader"></div>
       )}
-      <li className="name">
+      <span className="name">
         {poke.name.charAt(0).toUpperCase() + poke.name.slice(1)}
-      </li>
+      </span>
     </a>
   );
 }
