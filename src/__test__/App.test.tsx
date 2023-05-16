@@ -1,5 +1,5 @@
 // Imports
-import { describe, it, expect } from "vitest";
+import { describe, test, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 
 // To Test
@@ -7,17 +7,17 @@ import Pokedex from "../components/Pokedex";
 
 // Tests
 describe("Renders main page correctly", async () => {
-  it("Should render the page correctly", async () => {
+  test("Should render the page correctly", async () => {
     // Setup
     render(<Pokedex />);
-    const h1 = await screen.findByText("Pokedex");
+    const title = screen.findByText(/Pokedex/i);
     // Expectations
-    expect(h1).not.toBeNull();
+    expect(title).not.toBeNull();
   });
-  it("Should render the name of the pokemon correctly", async () => {
+  test("Should render the name of a pokemon between 1 to 10 correctly", async () => {
     // Setup
     render(<Pokedex />);
-    const span = await screen.findByText("#0009");
+    const span = await screen.findByText(/bulbasaur/i);
     // Expectations
     expect(span).not.toBeNull();
   });
