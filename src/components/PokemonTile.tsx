@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 
 export interface IPokeProps {
-  poke: { name: string; url: string };
+  name: string;
+  url: string;
 }
 
 /**
@@ -9,14 +10,14 @@ export interface IPokeProps {
  *
  * @component
  */
-export default function PokemonTile({ poke }: IPokeProps) {
+export default function PokemonTile({ name, url }: IPokeProps) {
   const [id, setId] = useState(0);
   const [artwork, setArtwork] = useState("");
 
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isImgLoaded, setIsImgLoaded] = useState(false);
 
   const handleImgLoad = () => {
-    setIsLoaded(true);
+    setIsImgLoaded(true);
   };
 
   /**
@@ -24,7 +25,7 @@ export default function PokemonTile({ poke }: IPokeProps) {
    * @function
    */
   async function getArtwork() {
-    const res = await fetch(`${poke.url}`, {
+    const res = await fetch(`${url}`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });
@@ -35,7 +36,7 @@ export default function PokemonTile({ poke }: IPokeProps) {
 
   useEffect(() => {
     getArtwork();
-  }, [poke]);
+  }, [name, url]);
 
   return (
     <a className={`pokemon-tile`} id={`${id}`} href={`/pokemon/${id}`}>
@@ -45,7 +46,7 @@ export default function PokemonTile({ poke }: IPokeProps) {
         src={artwork}
         onLoad={handleImgLoad}
       ></img>
-      {isLoaded ? (
+      {isImgLoaded ? (
         <div style={{ position: "relative" }}>
           <img
             style={{
@@ -63,7 +64,7 @@ export default function PokemonTile({ poke }: IPokeProps) {
         <div className="custom-loader"></div>
       )}
       <span className="name">
-        {poke.name.charAt(0).toUpperCase() + poke.name.slice(1)}
+        {name?.charAt(0).toUpperCase() + name?.slice(1)}
       </span>
     </a>
   );
