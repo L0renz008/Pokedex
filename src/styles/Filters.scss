@@ -1,0 +1,77 @@
+.filters {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 10px;
+
+  input[type="checkbox"] {
+    /* Add if not using autoprefixer */
+    -webkit-appearance: none;
+    appearance: none;
+    /* For iOS < 15 to remove gradient background */
+    background-color: #fff;
+    /* Not removed via appearance */
+    margin: 0;
+
+    border: 1px solid #000000;
+    border-radius: 5px;
+    width: 80px;
+    height: 35px;
+    cursor: pointer;
+
+    &#gen1 {
+      background: url("../assets/gen1.png"), #eeeeee;
+      background-size: 80px 35px;
+    }
+    &#gen2 {
+      background: url("../assets/gen2.png"), #eeeeee;
+      background-size: 80px 35px;
+    }
+    &#gen3 {
+      background: url("../assets/gen3.png"), #eeeeee;
+      background-size: 80px 35px;
+    }
+    &#gen4 {
+      background: url("../assets/gen4.png"), #eeeeee;
+      background-size: 80px 35px;
+    }
+    &#gen5 {
+      background: url("../assets/gen5.png"), #eeeeee;
+      background-size: 80px 35px;
+    }
+    &#gen6 {
+      background: url("../assets/gen6.png"), #eeeeee;
+      background-size: 80px 35px;
+    }
+    &#gen7 {
+      background: url("../assets/gen7.png"), #eeeeee;
+      background-size: 80px 35px;
+    }
+    &#gen8 {
+      background: url("../assets/gen8.png"), #eeeeee;
+      background-size: 80px 35px;
+    }
+    &#gen9 {
+      background: url("../assets/gen9.png"), #eeeeee;
+      background-size: 80px 35px;
+    }
+    &#all {
+      content: "all";
+    }
+    &:not(:checked) {
+      filter: grayscale(100%);
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.2);
+    }
+    &:checked {
+      box-shadow: inset 0px 1px 3px 1px rgba(0, 0, 0, 0.25);
+      filter: grayscale(0%);
+    }
+  }
+
+  img {
+    width: 80px;
+    border: 1px solid blue;
+    border-radius: 10px;
+  }
+}
