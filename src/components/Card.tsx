@@ -11,14 +11,14 @@ import arrow_left from "../assets/arrow_left.svg";
 
 import Loading from "./Loading";
 
-import { IPokemon } from "./types/PokemonTypes";
-import { IPokeData } from "./types/PokemonTypes";
+import { TPokemon } from "./types/PokemonTypes";
+import { TPokemonAPI } from "./types/PokemonTypes";
 
 /**
  * Component that displays the Card with all the Pokemon's infos
  */
 export default function Card() {
-  const [pokemon, setPokemon] = useState<IPokemon>();
+  const [pokemon, setPokemon] = useState<TPokemon>();
   const [loading, setLoading] = useState(true);
 
   const urlParams = useParams();
@@ -30,9 +30,9 @@ export default function Card() {
   async function getPokemonData() {
     try {
       const res = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
-      const pokeData: IPokeData = res.data;
+      const pokeData: TPokemonAPI = await res.data;
 
-      const pokemon: IPokemon = {
+      const pokemon: TPokemon = {
         id: pokeData.id,
         name:
           (pokeData.name as string).charAt(0).toUpperCase() +
