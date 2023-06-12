@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 export interface IPokeProps {
   name: string;
   url: string;
+  hidden: string;
 }
 
 /**
@@ -10,7 +11,7 @@ export interface IPokeProps {
  *
  * @component
  */
-export default function PokemonTile({ name, url }: IPokeProps) {
+export default function PokemonTile({ name, url, hidden }: IPokeProps) {
   const [id, setId] = useState(0);
   const [artwork, setArtwork] = useState("");
 
@@ -39,7 +40,11 @@ export default function PokemonTile({ name, url }: IPokeProps) {
   }, [name, url]);
 
   return (
-    <a className={`pokemon-tile`} id={`${id}`} href={`/pokemon/${id}`}>
+    <a
+      className={`pokemon-tile ${hidden}`}
+      id={`${id}`}
+      href={`/pokemon/${id}`}
+    >
       <span className="pokemon-id">#{id?.toString().padStart(4, "0")}</span>
       <img
         style={{ display: "none" }}
