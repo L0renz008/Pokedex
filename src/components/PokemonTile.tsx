@@ -41,15 +41,9 @@ export default function PokemonTile({ name, url, hidden }: IPokeProps) {
   }, [name, url]);
 
   return (
-    // <a
-    //   className={`pokemon-tile ${hidden}`}
-    //   id={`${id}`}
-    //   href={`/pokemon/${id}`}
-    // >
     <Link
       className={`pokemon-tile ${hidden}`}
       id={`${id}`}
-      // href={`/pokemon/${id}`}
       to={`/pokemon/${id}`}
     >
       <span className="pokemon-id">#{id?.toString().padStart(4, "0")}</span>
@@ -78,7 +72,6 @@ export default function PokemonTile({ name, url, hidden }: IPokeProps) {
       <span className="name">
         {name?.charAt(0).toUpperCase() + name?.slice(1)}
       </span>
-      {/* </a> */}
     </Link>
   );
 }

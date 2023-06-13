@@ -17,25 +17,21 @@
   &.skeleton-abilities {
     width: 35px;
     height: 32px;
-    // margin-bottom: 0.5rem;
     border-radius: 0.25rem;
   }
   &.skeleton-height,
   &.skeleton-weight {
     width: 27px;
     height: 16px;
-    // margin-bottom: 0.5rem;
     border-radius: 0.25rem;
   }
   &.skeleton-type {
     width: 30px;
     height: 17px;
-    // margin-bottom: 0.5rem;
     padding: 2px 8px;
     border-radius: 10px;
   }
   &.skeleton-img {
-    // margin-bottom: 0.5rem;
     padding: 2px 8px;
     border-radius: 10px;
     position: absolute;
@@ -45,7 +41,6 @@
     top: 0px;
   }
   &.skeleton-title {
-    // margin-bottom: 0.5rem;
     padding: 2px 8px;
     border-radius: 10px;
     width: 100px;
@@ -53,7 +48,6 @@
     flex-grow: 1;
   }
   &.skeleton-number {
-    // margin-bottom: 0.5rem;
     padding: 2px 8px;
     border-radius: 10px;
     width: 30px;
@@ -88,7 +82,6 @@
       width: 32px;
       height: 32px;
     }
-
     h1 {
       text-align: start;
       font-weight: 700;
