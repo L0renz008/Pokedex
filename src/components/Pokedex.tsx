@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroller";
 import Loading from "./Loading";
 import PokemonTile from "./PokemonTile";
@@ -41,19 +42,20 @@ export default function Pokedex() {
   const OFFSET_GEN9 = 905;
 
   const filterPerGen = (gen: number): boolean => {
-    return true;
+    // console.log(gen);
+    return gen == 1;
   };
 
   const FILTERS = [
     <Filters gen={1} active={true} filter={filterPerGen} />,
-    <Filters gen={2} active={true} />,
-    <Filters gen={3} active={true} />,
-    <Filters gen={4} active={true} />,
-    <Filters gen={5} active={true} />,
-    <Filters gen={6} active={true} />,
-    <Filters gen={7} active={true} />,
-    <Filters gen={8} active={true} />,
-    <Filters gen={9} active={true} />,
+    <Filters gen={2} active={true} filter={filterPerGen} />,
+    <Filters gen={3} active={true} filter={filterPerGen} />,
+    <Filters gen={4} active={true} filter={filterPerGen} />,
+    <Filters gen={5} active={true} filter={filterPerGen} />,
+    <Filters gen={6} active={true} filter={filterPerGen} />,
+    <Filters gen={7} active={true} filter={filterPerGen} />,
+    <Filters gen={8} active={true} filter={filterPerGen} />,
+    <Filters gen={9} active={true} filter={filterPerGen} />,
   ];
 
   /**
@@ -71,7 +73,12 @@ export default function Pokedex() {
     setlistOfPokemon(list);
     setLoading(false);
   }
+  let navigate = useNavigate();
+  async function getPokeAlea() {
+    const id = Math.round(Math.random() * 1010 + 1);
 
+    navigate(`/pokemon/${id}`);
+  }
   useEffect(() => {
     getListOfPokemons(1);
   }, []);
@@ -93,6 +100,7 @@ export default function Pokedex() {
       <header>
         <div className="title">
           <h1>Pokedex</h1>
+          <button onClick={getPokeAlea}>Get alea</button>
         </div>
       </header>
       <Search />

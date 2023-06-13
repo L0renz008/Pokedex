@@ -7,16 +7,16 @@ interface IFilterProps {
 }
 
 export default function Filters({ gen, active, filter }: IFilterProps) {
-  const OFFSET_GEN1 = 0;
-  const OFFSET_GEN2 = 151;
-  const OFFSET_GEN3 = 251;
-  const OFFSET_GEN4 = 386;
-  const OFFSET_GEN5 = 494;
-  const OFFSET_GEN6 = 649;
-  const OFFSET_GEN7 = 721;
-  const OFFSET_GEN8 = 809;
-  const OFFSET_GEN9 = 905;
-
+  // const OFFSET_GEN1 = 0;
+  // const OFFSET_GEN2 = 151;
+  // const OFFSET_GEN3 = 251;
+  // const OFFSET_GEN4 = 386;
+  // const OFFSET_GEN5 = 494;
+  // const OFFSET_GEN6 = 649;
+  // const OFFSET_GEN7 = 721;
+  // const OFFSET_GEN8 = 809;
+  // const OFFSET_GEN9 = 905;
+  filter(2);
   const [checked, setChecked] = useState(active);
 
   return (
