@@ -1,3 +1,162 @@
+button {
+  font-family: "Poppins";
+  font-weight: 700;
+  margin: 5px;
+
+  color: white;
+  background-color: black;
+  border: black solid 1px;
+
+  transition: linear 0.2s;
+  &:hover {
+    background: white;
+    color: black;
+  }
+  &.bug {
+    background: $bug;
+    border: $bug solid 1px;
+    &:hover {
+      background: white;
+      color: $bug;
+    }
+  }
+  &.dark {
+    background: $dark;
+    border: $dark solid 1px;
+    &:hover {
+      background: white;
+      color: $dark;
+    }
+  }
+  &.dragon {
+    background: $dragon;
+    border: $dragon solid 1px;
+    &:hover {
+      background: white;
+      color: $dragon;
+    }
+  }
+  &.electric {
+    background: $electric;
+    border: $electric solid 1px;
+    &:hover {
+      background: white;
+      color: $electric;
+    }
+  }
+  &.fairy {
+    background: $fairy;
+    border: $fairy solid 1px;
+    &:hover {
+      background: white;
+      color: $fairy;
+    }
+  }
+  &.fighting {
+    background: $fighting;
+    border: $fighting solid 1px;
+    &:hover {
+      background: white;
+      color: $fighting;
+    }
+  }
+  &.fire {
+    background: $fire;
+    border: $fire solid 1px;
+    &:hover {
+      background: white;
+      color: $fire;
+    }
+  }
+  &.flying {
+    background: $flying;
+    border: $flying solid 1px;
+    &:hover {
+      background: white;
+      color: $flying;
+    }
+  }
+  &.ghost {
+    background: $ghost;
+    border: $ghost solid 1px;
+    &:hover {
+      background: white;
+      color: $ghost;
+    }
+  }
+  &.normal {
+    background: $normal;
+    border: $normal solid 1px;
+    &:hover {
+      background: white;
+      color: $normal;
+    }
+  }
+  &.grass {
+    background: $grass;
+    border: $grass solid 1px;
+    &:hover {
+      background: white;
+      color: $grass;
+    }
+  }
+  &.ground {
+    background: $ground;
+    border: $ground solid 1px;
+    &:hover {
+      background: white;
+      color: $ground;
+    }
+  }
+  &.ice {
+    background: $ice;
+    border: $ice solid 1px;
+    &:hover {
+      background: white;
+      color: $ice;
+    }
+  }
+  &.poison {
+    background: $poison;
+    border: $poison solid 1px;
+    &:hover {
+      background: white;
+      color: $poison;
+    }
+  }
+  &.psychic {
+    background: $psychic;
+    border: $psychic solid 1px;
+    &:hover {
+      background: white;
+      color: $psychic;
+    }
+  }
+  &.rock {
+    background: $rock;
+    border: $rock solid 1px;
+    &:hover {
+      background: white;
+      color: $rock;
+    }
+  }
+  &.steel {
+    background: $steel;
+    border: $steel solid 1px;
+    &:hover {
+      background: white;
+      color: $steel;
+    }
+  }
+  &.water {
+    background: $water;
+    border: $water solid 1px;
+    &:hover {
+      background: white;
+      color: $water;
+    }
+  }
+}
 .card-container {
   display: flex;
   flex-direction: column;
