@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 
 import chevronRight from "../assets/chevron_right.svg";
@@ -10,6 +10,7 @@ import height from "../assets/height.svg";
 import arrow_left from "../assets/arrow_left.svg";
 
 import Loading from "./Loading";
+import LoadingCard from "./LoadingCard";
 
 import { TPokemon } from "./types/PokemonTypes";
 import { TPokemonAPI } from "./types/PokemonTypes";
@@ -20,6 +21,8 @@ import { TPokemonAPI } from "./types/PokemonTypes";
 export default function Card() {
   const [pokemon, setPokemon] = useState<TPokemon>();
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   const urlParams = useParams();
   const id = urlParams.id;
@@ -80,244 +83,259 @@ export default function Card() {
     }
   }
 
+  async function getPokeAlea() {
+    const id = Math.round(Math.random() * 1010 + 1);
+    navigate(`/pokemon/${id}`);
+  }
+
   const [imgLoaded, setImgLoaded] = useState(false);
   const handleImgLoad = () => {
     setImgLoaded(true);
   };
 
   useEffect(() => {
+    setLoading(true);
     getPokemonData();
-  }, []);
+  }, [id]);
 
-  // if (error) return <div>OUi</div>;
-  if (loading) return <Loading />;
+  if (loading) return <LoadingCard />;
   return (
-    <div className={`card-container ${pokemon?.types[0].toLowerCase()}`}>
-      <div className="pokeball">
-        <img src={pokeball} alt="pokeball" />
-      </div>
-      <div className="title">
-        <a href="/">
-          <img
-            src={arrow_left}
-            alt="Retour"
-            className="arrow_left"
-            onClick={getPokemonData}
-          />
-        </a>
-        <h1>{pokemon?.name}</h1>
-        <span>#{pokemon?.id.toString().padStart(4, "0")}</span>
-      </div>
-      <div className="image">
-        {pokemon?.id !== 1 ? (
-          <a href={pokemon ? `/pokemon/${pokemon?.id - 1}` : ""}>
+    <>
+      <button className={pokemon?.types[0].toLowerCase()} onClick={getPokeAlea}>
+        Get Random Pokemon
+      </button>
+
+      <div className={`card-container ${pokemon?.types[0].toLowerCase()}`}>
+        <div className="pokeball">
+          <img src={pokeball} alt="pokeball" />
+        </div>
+        <div className="title">
+          <Link to="/">
             <img
-              src={chevronLeft}
-              alt="chevron-left"
-              className="chevron left"
+              src={arrow_left}
+              alt="Retour"
+              className="arrow_left"
+              onClick={getPokemonData}
             />
-          </a>
-        ) : (
-          <div />
-        )}
+          </Link>
+          <h1>{pokemon?.name}</h1>
+          <span>#{pokemon?.id.toString().padStart(4, "0")}</span>
+        </div>
+        <div className="image">
+          {pokemon?.id !== 1 ? (
+            <Link to={pokemon ? `/pokemon/${pokemon?.id - 1}` : ""}>
+              <img
+                src={chevronLeft}
+                alt="chevron-left"
+                className="chevron left"
+              />
+            </Link>
+          ) : (
+            <div />
+          )}
 
-        <img
-          src={pokemon?.artwork.official}
-          alt={`${pokemon?.name}.png`}
-          onLoad={handleImgLoad}
-          style={{ display: "none" }}
-        />
-
-        {imgLoaded ? (
           <img
             src={pokemon?.artwork.official}
             alt={`${pokemon?.name}.png`}
-            className="pokemon-img"
+            onLoad={handleImgLoad}
+            style={{ display: "none" }}
           />
-        ) : (
-          <Loading />
-        )}
 
-        {pokemon?.id !== 1010 ? (
-          <a href={pokemon ? `/pokemon/${pokemon?.id + 1}` : ""}>
+          {imgLoaded ? (
             <img
-              src={chevronRight}
-              alt="chevron-right"
-              className="chevron right"
+              src={pokemon?.artwork.official}
+              alt={`${pokemon?.name}.png`}
+              className="pokemon-img"
             />
-          </a>
-        ) : (
-          <div />
-        )}
+          ) : (
+            <Loading />
+          )}
+
+          {pokemon?.id !== 1010 ? (
+            <Link to={pokemon ? `/pokemon/${pokemon?.id + 1}` : ""}>
+              <img
+                src={chevronRight}
+                alt="chevron-right"
+                className="chevron right"
+              />
+            </Link>
+          ) : (
+            <div />
+          )}
+        </div>
+        <div className="card-info">
+          <div className="type-container">
+            {pokemon
+              ? pokemon.types.map((type) => (
+                  <h2 className={`type ${type.toLowerCase()}`} key={type}>
+                    {type}
+                  </h2>
+                ))
+              : null}
+          </div>
+          <div className={`about ${pokemon?.types[0].toLowerCase()}`}>
+            <h2>About</h2>
+          </div>
+          <div className="attributes">
+            <div className="weight">
+              <div className="weight-info">
+                <img src={weight} alt="weight" className="img_weight" />
+                <span>{pokemon ? pokemon.weight / 10 : null} kg</span>
+              </div>
+              <span>Weight</span>
+            </div>
+            <div className="height">
+              <div className="height-info">
+                <img src={height} alt="height" className="img_height" />
+                <span>{pokemon ? pokemon.height / 10 : null} m</span>
+              </div>
+              <span>Height</span>
+            </div>
+            <div className="abilities">
+              <div className="abilities-info">
+                {pokemon?.abilities.map((ability) => (
+                  <span key={ability}>{ability}</span>
+                ))}
+              </div>
+              <span>Abilities</span>
+            </div>
+          </div>
+          <div className="description">
+            <div className="skeleton skeleton-text"></div>
+            <p style={{ display: "none" }}>
+              There is a plant seed on its back right from the day this Pokémon
+              is born. The seed slowly grows larger.
+            </p>
+          </div>
+          <div className={`base-stats ${pokemon?.types[0].toLowerCase()}`}>
+            <h2>Base Stats</h2>
+            <div className="base-stats-content">
+              <div className="label">
+                <p>HP</p>
+                <p>ATK</p>
+                <p>DEF</p>
+                <p>SpATK</p>
+                <p>SpDEF</p>
+                <p>SPE</p>
+              </div>
+              <div className="value">
+                <p>{pokemon?.stats.hp}</p>
+                <p>{pokemon?.stats.attack}</p>
+                <p>{pokemon?.stats.defense}</p>
+                <p>{pokemon?.stats.spattack}</p>
+                <p>{pokemon?.stats.spdefense}</p>
+                <p>{pokemon?.stats.speed}</p>
+              </div>
+              <div className="chart">
+                <div
+                  className={`stat hp ${pokemon?.types[0].toLowerCase()}`}
+                  style={{
+                    width: `${pokemon ? (pokemon.stats.hp * 100) / 255 : 0}%`,
+                  }}
+                >
+                  <div
+                    className={`stat hp ${pokemon?.types[0].toLowerCase()}`}
+                    style={{
+                      width: `${pokemon ? (100 * 255) / pokemon.stats.hp : 0}%`,
+                      opacity: "0.2",
+                    }}
+                  ></div>
+                </div>
+                <div
+                  className={`stat attack ${pokemon?.types[0].toLowerCase()}`}
+                  style={{
+                    width: `${
+                      pokemon ? (pokemon.stats.attack * 100) / 255 : 0
+                    }%`,
+                  }}
+                >
+                  <div
+                    className={`stat hp ${pokemon?.types[0].toLowerCase()}`}
+                    style={{
+                      width: `${
+                        pokemon ? (100 * 255) / pokemon.stats.attack : 0
+                      }%`,
+                      opacity: "0.2",
+                    }}
+                  ></div>
+                </div>
+                <div
+                  className={`stat defense ${pokemon?.types[0].toLowerCase()}`}
+                  style={{
+                    width: `${
+                      pokemon ? (pokemon.stats.defense * 100) / 255 : 0
+                    }%`,
+                  }}
+                >
+                  <div
+                    className={`stat hp ${pokemon?.types[0].toLowerCase()}`}
+                    style={{
+                      width: `${
+                        pokemon ? (100 * 255) / pokemon.stats.defense : 0
+                      }%`,
+                      opacity: "0.2",
+                    }}
+                  ></div>
+                </div>
+                <div
+                  className={`stat spe-attack ${pokemon?.types[0].toLowerCase()}`}
+                  style={{
+                    width: `${
+                      pokemon ? (pokemon.stats.spattack * 100) / 255 : 0
+                    }%`,
+                  }}
+                >
+                  <div
+                    className={`stat hp ${pokemon?.types[0].toLowerCase()}`}
+                    style={{
+                      width: `${
+                        pokemon ? (100 * 255) / pokemon?.stats.spattack : 0
+                      }%`,
+                      opacity: "0.2",
+                    }}
+                  ></div>
+                </div>
+                <div
+                  className={`stat spe-defense ${pokemon?.types[0].toLowerCase()}`}
+                  style={{
+                    width: `${
+                      pokemon ? (pokemon.stats.spdefense * 100) / 255 : 0
+                    }%`,
+                  }}
+                >
+                  <div
+                    className={`stat hp ${pokemon?.types[0].toLowerCase()}`}
+                    style={{
+                      width: `${
+                        pokemon ? (100 * 255) / pokemon?.stats.spdefense : 0
+                      }%`,
+                      opacity: "0.2",
+                    }}
+                  ></div>
+                </div>
+                <div
+                  className={`stat speed ${pokemon?.types[0].toLowerCase()}`}
+                  style={{
+                    width: `${
+                      pokemon ? (pokemon?.stats.speed * 100) / 255 : 0
+                    }%`,
+                  }}
+                >
+                  <div
+                    className={`stat hp ${pokemon?.types[0].toLowerCase()}`}
+                    style={{
+                      width: `${
+                        pokemon ? (100 * 255) / pokemon?.stats.speed : 0
+                      }%`,
+                      opacity: "0.2",
+                    }}
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="card-info">
-        <div className="type-container">
-          {pokemon
-            ? pokemon.types.map((type) => (
-                <h2 className={`type ${type.toLowerCase()}`} key={type}>
-                  {type}
-                </h2>
-              ))
-            : null}
-        </div>
-        <div className={`about ${pokemon?.types[0].toLowerCase()}`}>
-          <h2>About</h2>
-        </div>
-        <div className="attributes">
-          <div className="weight">
-            <div className="weight-info">
-              <img src={weight} alt="weight" className="img_weight" />
-              <span>{pokemon ? pokemon.weight / 10 : null} kg</span>
-            </div>
-            <span>Weight</span>
-          </div>
-          <div className="height">
-            <div className="height-info">
-              <img src={height} alt="height" className="img_height" />
-              <span>{pokemon ? pokemon.height / 10 : null} m</span>
-            </div>
-            <span>Height</span>
-          </div>
-          <div className="abilities">
-            <div className="abilities-info">
-              {pokemon?.abilities.map((ability) => (
-                <span key={ability}>{ability}</span>
-              ))}
-            </div>
-            <span>Abilities</span>
-          </div>
-        </div>
-        <div className="description">
-          <div className="skeleton skeleton-text"></div>
-          <p style={{ display: "none" }}>
-            There is a plant seed on its back right from the day this Pokémon is
-            born. The seed slowly grows larger.
-          </p>
-        </div>
-        <div className={`base-stats ${pokemon?.types[0].toLowerCase()}`}>
-          <h2>Base Stats</h2>
-          <div className="base-stats-content">
-            <div className="label">
-              <p>HP</p>
-              <p>ATK</p>
-              <p>DEF</p>
-              <p>SpATK</p>
-              <p>SpDEF</p>
-              <p>SPE</p>
-            </div>
-            <div className="value">
-              <p>{pokemon?.stats.hp}</p>
-              <p>{pokemon?.stats.attack}</p>
-              <p>{pokemon?.stats.defense}</p>
-              <p>{pokemon?.stats.spattack}</p>
-              <p>{pokemon?.stats.spdefense}</p>
-              <p>{pokemon?.stats.speed}</p>
-            </div>
-            <div className="chart">
-              <div
-                className={`stat hp ${pokemon?.types[0].toLowerCase()}`}
-                style={{
-                  width: `${pokemon ? (pokemon.stats.hp * 100) / 255 : 0}%`,
-                }}
-              >
-                <div
-                  className={`stat hp ${pokemon?.types[0].toLowerCase()}`}
-                  style={{
-                    width: `${pokemon ? (100 * 255) / pokemon.stats.hp : 0}%`,
-                    opacity: "0.2",
-                  }}
-                ></div>
-              </div>
-              <div
-                className={`stat attack ${pokemon?.types[0].toLowerCase()}`}
-                style={{
-                  width: `${pokemon ? (pokemon.stats.attack * 100) / 255 : 0}%`,
-                }}
-              >
-                <div
-                  className={`stat hp ${pokemon?.types[0].toLowerCase()}`}
-                  style={{
-                    width: `${
-                      pokemon ? (100 * 255) / pokemon.stats.attack : 0
-                    }%`,
-                    opacity: "0.2",
-                  }}
-                ></div>
-              </div>
-              <div
-                className={`stat defense ${pokemon?.types[0].toLowerCase()}`}
-                style={{
-                  width: `${
-                    pokemon ? (pokemon.stats.defense * 100) / 255 : 0
-                  }%`,
-                }}
-              >
-                <div
-                  className={`stat hp ${pokemon?.types[0].toLowerCase()}`}
-                  style={{
-                    width: `${
-                      pokemon ? (100 * 255) / pokemon.stats.defense : 0
-                    }%`,
-                    opacity: "0.2",
-                  }}
-                ></div>
-              </div>
-              <div
-                className={`stat spe-attack ${pokemon?.types[0].toLowerCase()}`}
-                style={{
-                  width: `${
-                    pokemon ? (pokemon.stats.spattack * 100) / 255 : 0
-                  }%`,
-                }}
-              >
-                <div
-                  className={`stat hp ${pokemon?.types[0].toLowerCase()}`}
-                  style={{
-                    width: `${
-                      pokemon ? (100 * 255) / pokemon?.stats.spattack : 0
-                    }%`,
-                    opacity: "0.2",
-                  }}
-                ></div>
-              </div>
-              <div
-                className={`stat spe-defense ${pokemon?.types[0].toLowerCase()}`}
-                style={{
-                  width: `${
-                    pokemon ? (pokemon.stats.spdefense * 100) / 255 : 0
-                  }%`,
-                }}
-              >
-                <div
-                  className={`stat hp ${pokemon?.types[0].toLowerCase()}`}
-                  style={{
-                    width: `${
-                      pokemon ? (100 * 255) / pokemon?.stats.spdefense : 0
-                    }%`,
-                    opacity: "0.2",
-                  }}
-                ></div>
-              </div>
-              <div
-                className={`stat speed ${pokemon?.types[0].toLowerCase()}`}
-                style={{
-                  width: `${pokemon ? (pokemon?.stats.speed * 100) / 255 : 0}%`,
-                }}
-              >
-                <div
-                  className={`stat hp ${pokemon?.types[0].toLowerCase()}`}
-                  style={{
-                    width: `${
-                      pokemon ? (100 * 255) / pokemon?.stats.speed : 0
-                    }%`,
-                    opacity: "0.2",
-                  }}
-                ></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    </>
   );
 }
