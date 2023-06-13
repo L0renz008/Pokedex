@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export interface IPokeProps {
   name: string;
@@ -40,10 +41,16 @@ export default function PokemonTile({ name, url, hidden }: IPokeProps) {
   }, [name, url]);
 
   return (
-    <a
+    // <a
+    //   className={`pokemon-tile ${hidden}`}
+    //   id={`${id}`}
+    //   href={`/pokemon/${id}`}
+    // >
+    <Link
       className={`pokemon-tile ${hidden}`}
       id={`${id}`}
-      href={`/pokemon/${id}`}
+      // href={`/pokemon/${id}`}
+      to={`/pokemon/${id}`}
     >
       <span className="pokemon-id">#{id?.toString().padStart(4, "0")}</span>
       <img
@@ -71,6 +78,7 @@ export default function PokemonTile({ name, url, hidden }: IPokeProps) {
       <span className="name">
         {name?.charAt(0).toUpperCase() + name?.slice(1)}
       </span>
-    </a>
+      {/* </a> */}
+    </Link>
   );
 }
