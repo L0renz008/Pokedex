@@ -82,18 +82,14 @@ export default function Card() {
     }
   }
 
-  async function getPokeAlea() {
-    const id = Math.round(Math.random() * 1010 + 1);
-    navigate(`/pokemon/${id}`);
-  }
-
-  const [imgLoaded, setImgLoaded] = useState(false);
+  const [imgLoading, setImgLoading] = useState(true);
   const handleImgLoad = () => {
-    setImgLoaded(true);
+    setImgLoading(false);
   };
 
   useEffect(() => {
     setLoading(true);
+    setImgLoading(true);
     getPokemonData();
   }, [id]);
 
@@ -130,23 +126,35 @@ export default function Card() {
           ) : (
             <div />
           )}
+          <div style={{ display: imgLoading ? "block" : "none" }}>
+            <Loading />
+          </div>
+          <div style={{ display: imgLoading ? "none" : "block" }}>
+            {pokemon?.artwork.official ? (
+              <img
+                src={pokemon?.artwork.official}
+                // alt={`${pokemon?.name}.png`}
+                onLoad={() => {
+                  handleImgLoad();
+                  console.log(pokemon?.artwork);
+                }}
+                className="pokemon-img"
+                // style={{ display: "none" }}
+              />
+            ) : (
+              "No image"
+            )}
+          </div>
 
-          <img
-            src={pokemon?.artwork.official}
-            alt={`${pokemon?.name}.png`}
-            onLoad={handleImgLoad}
-            style={{ display: "none" }}
-          />
-
-          {imgLoaded ? (
+          {/* {imgLoading ? (
+            <Loading />
+          ) : (
             <img
               src={pokemon?.artwork.official}
-              alt={`${pokemon?.name}.png`}
+              // alt={`${pokemon?.name}.png`}
               className="pokemon-img"
             />
-          ) : (
-            <Loading />
-          )}
+          )} */}
 
           {pokemon?.id !== 1010 ? (
             <Link to={pokemon ? `/pokemon/${pokemon?.id + 1}` : ""}>
