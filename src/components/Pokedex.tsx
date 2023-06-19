@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroller";
 import Loading from "./Loading";
 import PokemonTile from "./PokemonTile";
@@ -17,6 +16,7 @@ import Filters from "./Filters";
 // import gen9 from "../assets/gen9.png";
 
 import axios from "axios";
+import GetPokemonAlea from "./GetPokemonAlea";
 
 interface IListOfPoke {
   name: string;
@@ -73,12 +73,7 @@ export default function Pokedex() {
     setlistOfPokemon(list);
     setLoading(false);
   }
-  let navigate = useNavigate();
-  async function getPokeAlea() {
-    const id = Math.round(Math.random() * 1010 + 1);
 
-    navigate(`/pokemon/${id}`);
-  }
   useEffect(() => {
     getListOfPokemons(1);
   }, []);
@@ -100,7 +95,7 @@ export default function Pokedex() {
       <header>
         <div className="title">
           <h1>Pokedex</h1>
-          <button onClick={getPokeAlea}>Get alea</button>
+          <GetPokemonAlea />
         </div>
       </header>
       <Search />
