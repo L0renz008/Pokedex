@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export interface IPokeProps {
   name: string;
   url: string;
-  hidden: string;
+  hidden?: string;
 }
 
 /**
