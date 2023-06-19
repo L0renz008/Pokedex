@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 
 import chevronRight from "../assets/chevron_right.svg";
@@ -14,6 +14,7 @@ import LoadingCard from "./LoadingCard";
 
 import { TPokemon } from "./types/PokemonTypes";
 import { TPokemonAPI } from "./types/PokemonTypes";
+import GetPokemonAlea from "./GetPokemonAlea";
 
 /**
  * Component that displays the Card with all the Pokemon's infos
@@ -21,8 +22,6 @@ import { TPokemonAPI } from "./types/PokemonTypes";
 export default function Card() {
   const [pokemon, setPokemon] = useState<TPokemon>();
   const [loading, setLoading] = useState(true);
-
-  const navigate = useNavigate();
 
   const urlParams = useParams();
   const id = urlParams.id;
@@ -101,9 +100,7 @@ export default function Card() {
   if (loading) return <LoadingCard />;
   return (
     <>
-      <button className={pokemon?.types[0].toLowerCase()} onClick={getPokeAlea}>
-        Get Random Pokemon
-      </button>
+      <GetPokemonAlea type={pokemon?.types[0].toLowerCase()} />
 
       <div className={`card-container ${pokemon?.types[0].toLowerCase()}`}>
         <div className="pokeball">
