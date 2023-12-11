@@ -31,8 +31,9 @@ export default function Card() {
    */
   async function getPokemonData() {
     try {
-      const res = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
-      const pokeData: TPokemonAPI = await res.data;
+      const { data: pokeData } = await axios.get<TPokemonAPI>(
+        `https://pokeapi.co/api/v2/pokemon/${id}`
+      );
 
       const pokemon: TPokemon = {
         id: pokeData.id,
@@ -75,10 +76,10 @@ export default function Card() {
       if (e.response) {
         if (e.response.status === 404) {
           window.location.href = `/pokemon/not-found`;
-          return;
+          return null;
         }
       }
-      return;
+      return null;
     }
   }
 
@@ -134,10 +135,7 @@ export default function Card() {
               <img
                 src={pokemon?.artwork.official}
                 // alt={`${pokemon?.name}.png`}
-                onLoad={() => {
-                  handleImgLoad();
-                  console.log(pokemon?.artwork);
-                }}
+                onLoad={handleImgLoad}
                 className="pokemon-img"
                 // style={{ display: "none" }}
               />
