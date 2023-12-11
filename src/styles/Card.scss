@@ -8,10 +8,15 @@ button {
   border: black solid 1px;
 
   transition: linear 0.2s;
+  &:disabled {
+    pointer-events: none;
+    opacity: 0.3;
+  }
   &:hover {
     background: white;
     color: black;
   }
+
   &.bug {
     background: $bug;
     border: $bug solid 1px;
@@ -688,4 +693,7 @@ button {
       }
     }
   }
+}
+section + p {
+
 }
