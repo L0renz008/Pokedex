@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import InfiniteScroll from "react-infinite-scroller";
+import { useNavigate, useLocation } from "react-router-dom";
+// import InfiniteScroll from "react-infinite-scroller";
 import Loading from "./Loading";
 import PokemonTile from "./PokemonTile";
 import Search from "./Search";
@@ -30,6 +31,11 @@ export default function Pokedex() {
   const [listOfPokemon, setlistOfPokemon] = useState<IListOfPoke[]>();
   const [pokedexSize, setPokedexSize] = useState(0);
   const [loading, setLoading] = useState(true);
+
+  const limit = 36;
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const navigate = useNavigate();
 
   const OFFSET_GEN1 = 0;
   const OFFSET_GEN2 = 151;
@@ -63,20 +69,35 @@ export default function Pokedex() {
    * @param {number} page
    */
   async function getListOfPokemons(page: number) {
+    // const res = await axios.get(
+    //   `https://pokeapi.co/api/v2/pokemon?limit=${page * 20}`
+    // );
     const res = await axios.get(
-      `https://pokeapi.co/api/v2/pokemon?limit=${page * 20}`
+      `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${
+        (page - 1) * limit
+      }`
     );
+    // const res = await axios.get(
+    //   `https://pokeapi.co/api/v2/pokemon?limit=1300&offset=0`
+    // );
     const data = res.data;
     const list = data.results;
 
+    navigate(`?page=${page}`, { replace: true });
     setPokedexSize(data.count);
     setlistOfPokemon(list);
     setLoading(false);
   }
 
   useEffect(() => {
-    getListOfPokemons(1);
-  }, []);
+    const params = new URLSearchParams(location.search);
+    // console.log(params.get("page"));
+    const savedPage = parseInt(params.get("page") ?? "1", 10);
+    console.log(savedPage);
+    setCurrentPage(savedPage);
+    getListOfPokemons(savedPage);
+    // getListOfPokemons(currentPage);
+  }, [currentPage]);
 
   const [gen1Checked, setGen1Checked] = useState(true);
   const [gen2Checked, setGen2Checked] = useState(true);
@@ -180,12 +201,14 @@ export default function Pokedex() {
         <img src={gen8}></img>
         <img src={gen9}></img> */}
       </div>
-      <InfiniteScroll
+      {/* <InfiniteScroll
         pageStart={0}
         loadMore={getListOfPokemons}
+        // loadMore={() => {}}
         hasMore={listOfPokemon?.length !== pokedexSize}
         className="pokedex-body"
-      >
+      > */}
+      <div className="pokedex-body">
         {listOfPokemon?.map((poke, index) => {
           return (
             <PokemonTile
@@ -195,28 +218,28 @@ export default function Pokedex() {
               hidden={
                 (gen1Checked &&
                   index + 1 > OFFSET_GEN1 &&
-                  index + 1 < OFFSET_GEN2) ||
+                  index + 1 <= OFFSET_GEN2) ||
                 (gen2Checked &&
                   index + 1 > OFFSET_GEN2 &&
-                  index + 1 < OFFSET_GEN3) ||
+                  index + 1 <= OFFSET_GEN3) ||
                 (gen3Checked &&
                   index + 1 > OFFSET_GEN3 &&
-                  index + 1 < OFFSET_GEN4) ||
+                  index + 1 <= OFFSET_GEN4) ||
                 (gen4Checked &&
                   index + 1 > OFFSET_GEN4 &&
-                  index + 1 < OFFSET_GEN5) ||
+                  index + 1 <= OFFSET_GEN5) ||
                 (gen5Checked &&
                   index + 1 > OFFSET_GEN5 &&
-                  index + 1 < OFFSET_GEN6) ||
+                  index + 1 <= OFFSET_GEN6) ||
                 (gen6Checked &&
                   index + 1 > OFFSET_GEN6 &&
-                  index + 1 < OFFSET_GEN7) ||
+                  index + 1 <= OFFSET_GEN7) ||
                 (gen7Checked &&
                   index + 1 > OFFSET_GEN7 &&
-                  index + 1 < OFFSET_GEN8) ||
+                  index + 1 <= OFFSET_GEN8) ||
                 (gen8Checked &&
                   index + 1 > OFFSET_GEN8 &&
-                  index + 1 < OFFSET_GEN9) ||
+                  index + 1 <= OFFSET_GEN9) ||
                 (gen9Checked && index + 1 > OFFSET_GEN9)
                   ? ""
                   : "hidden"
@@ -224,7 +247,25 @@ export default function Pokedex() {
             />
           );
         })}
-      </InfiniteScroll>
+      </div>
+      {/* </InfiniteScroll> */}
+
+      <button
+        onClick={() => {
+          setCurrentPage((currentPage) => currentPage - 1);
+        }}
+        disabled={currentPage === 1}
+      >
+        Previous page
+      </button>
+      <button
+        onClick={() => {
+          setCurrentPage((currentPage) => currentPage + 1);
+        }}
+        disabled={currentPage === Math.trunc(pokedexSize / limit) + 1}
+      >
+        Next page
+      </button>
     </>
   );
 }

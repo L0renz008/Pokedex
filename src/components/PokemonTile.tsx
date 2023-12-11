@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export interface IPokeProps {
@@ -6,6 +6,8 @@ export interface IPokeProps {
   url: string;
   hidden?: string;
 }
+
+const pokemonCache = new Map();
 
 /**
  * Component for showing mini tiles of Pokemon.
@@ -18,22 +20,36 @@ export default function PokemonTile({ name, url, hidden }: IPokeProps) {
 
   const [isImgLoaded, setIsImgLoaded] = useState(false);
 
-  const handleImgLoad = () => {
+  const handleImgLoad = useCallback(() => {
     setIsImgLoaded(true);
-  };
+  }, []);
 
   /**
    * Function called to get the image of the Pokemon
    * @function
    */
   async function getArtwork() {
-    const res = await fetch(`${url}`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    });
-    const data = await res.json();
-    setArtwork(data.sprites.other["official-artwork"].front_default);
-    setId(data.id);
+    if (pokemonCache.has(url)) {
+      const cachedData = pokemonCache.get(url);
+      setArtwork(cachedData.artwork);
+      setId(cachedData.id);
+    } else {
+      try {
+        const res = await fetch(`${url}`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+        const data = await res.json();
+        const newArtwork = data.sprites.other["official-artwork"].front_default;
+        const newId = data.id;
+        setArtwork(newArtwork);
+        setId(newId);
+
+        pokemonCache.set(url, { artwork: newArtwork, id: newId });
+      } catch (e) {
+        console.log("Erreur lors de la récupération des données du Pokemon", e);
+      }
+    }
   }
 
   useEffect(() => {
